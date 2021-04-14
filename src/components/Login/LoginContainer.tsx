@@ -12,7 +12,7 @@ const LoginContainer = (props: any) => {
 
 const mapStateToProps = (state: any) => {
   return {
-    isAuth: state.isAuth
+    isAuth: state.login.isAuth
   }
 }
 

@@ -8,7 +8,7 @@ const initialState: initialStateType = {
   isAuth: false
 }
 
-const loginReducer = (state = initialState, action: any) => {
+const loginReducer = (state = initialState, action: any): initialStateType => {
   switch (action.type) {
 
     case SET_AUTH:
@@ -22,9 +22,11 @@ const loginReducer = (state = initialState, action: any) => {
   }
 }
 
-export const setAuth = () => ({
-  type: SET_AUTH
-})
+type setAuthType = {
+  type: typeof SET_AUTH
+}
+
+export const setAuth = (): setAuthType => ({ type: SET_AUTH })
 
 
 export default loginReducer
