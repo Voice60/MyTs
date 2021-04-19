@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { stopSubmit } from 'redux-form'
-import { setAuth } from '../../redux/loginReducer'
+import { setAuth, setLogin } from '../../redux/loginReducer'
 import Login from './Login'
+
 
 const LoginContainer = (props: any) => {
   return (
-    <Login isAuth={props.isAuth} setAuthData={props.setAuthData} />
+    <Login isAuth={props.isAuth} setAuthData={props.setAuthData} setUser={props.setUser} />
   )
 }
 
@@ -25,6 +26,9 @@ const mapDispatchToProps = (dispatch: any) => {
       } else {
         dispatch(setAuth())
       }
+    },
+    setUser: (login: string) => {
+      dispatch(setLogin(login))
     }
   }
 }

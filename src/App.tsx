@@ -1,42 +1,57 @@
+import { Layout } from 'antd';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { BrowserRouter, Route } from 'react-router-dom';
+import './App.css';
+import LoginContainer from './components/Login/LoginContainer';
 import { Main } from './components/Main/Main';
-import Nav from './components/Nav/Nav';
+import NavContainer from './components/Nav/NavContainer';
 import { News } from './components/News/News';
 import { Profile } from './components/Profile/Profile';
-import React from 'react'
-import { connect, Provider } from 'react-redux'
-import { BrowserRouter, Route } from 'react-router-dom';
-import './App.css'
-import store from './redux/redux';
-import LoginContainer from './components/Login/LoginContainer';
+import { setLogin } from './redux/loginReducer';
 
-const App = () => {
+
+
+const {Content, Footer } = Layout;
+
+const App = (props: any) => {
+
+  useEffect(() => {
+    const rememberMe = localStorage.getItem('rememberMe') === 'true';
+    const user = rememberMe ? localStorage.getItem('user') : null;
+    if (user != null) {
+      props.setUser(user)
+    }
+  })
+
   return (
-    <Provider store={store} >
-      <div>
+      <Layout className="layout">
         <BrowserRouter>
-          <Nav />
-          <Route path='/'
-            render={() => <Main />} />
-          <Route path='/news'
-            render={() => <News />} />
-          <Route path='/profile'
-            render={() => <Profile />} />
-          <Route path='/login'
-            render={() => <LoginContainer />} />
+          <NavContainer />
+          <Content className='wrap' style={{ padding: '0 50px' }}>
+            <div className="site-layout-content">
+              <Route path='/'
+                render={() => <Main />} />
+              <Route path='/news'
+                render={() => <News />} />
+              <Route path='/profile'
+                render={() => <Profile />} />
+              <Route path='/login'
+                render={() => <LoginContainer />} />
+            </div>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>Created by Voice</Footer>
         </BrowserRouter>
-      </div>
-    </Provider>
+      </Layout>
   )
 }
 
-export default App
 
-// const mapStateToProps = (state) => ({
-
-// })
-
-// const mapDispatchToProps = (dispatch) {
-
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(App)
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setUser: (login: string) => {
+      dispatch(setLogin(login))
+    }
+  }
+}
+export default connect(null, mapDispatchToProps)(App)

@@ -1,20 +1,19 @@
 @import '../../assets.scss';
 
-.navigation {
-  padding: 20px 20px;
-  background-color: $lightBlue;
-.navUl {
-  margin: 0;
-  list-style-type: none;
-  display: flex;
-  .item {
-    color: white;
-    a {
-      text-decoration: none;
-      font-size: 24px;
-      padding-right: 30px;
-      color: white;
-    }
+.wrap {
+  width: 100%;
+  background-color: #001529;
+  padding-right: 15px !important;
+
+  .wrap2 {
+    margin: 0 auto !important;
+    max-width: 1170px;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .navigation {}
   }
-}
 }

@@ -1,33 +1,46 @@
-import React from 'react'
-import { Redirect } from 'react-router'
-import { Field, reduxForm } from 'redux-form'
+import { Button, Checkbox, Form, Input, Typography } from 'antd';
+import React from 'react';
+import { Redirect } from 'react-router';
+import styles from './Login.module.scss';
 
-import styles from './Login.module.scss'
 
-const LoginForm = (props: any) => {
-  return (
-    <form className={styles.form} onSubmit={props.handleSubmit}>
-      <Field className={styles.item} component={'input'} placeholder={'логин'} name={'login'}></Field>
-      <Field className={styles.item} component={'input'} placeholder={'пароль'} name={'password'} type={'password'}></Field>
-      {props.error && <p className={styles.error}>{props.error}</p>}
-      <button className={styles.button}>Войти</button>
-    </form>
-  )
-}
-
-let LoginReduxForm = reduxForm({form: 'login'})(LoginForm)
+const { Title } = Typography;
 
 const Login = (props: any) => {
+  const [form] = Form.useForm();
+
+  let onSubmit = (formData: any) => {
+    props.setAuthData(formData.login, formData.password)
+    localStorage.setItem('rememberMe', formData.remember)
+    localStorage.setItem('user', formData.remember ? formData.login : '')
+  }
 
   if (props.isAuth) { return <Redirect to={'/'} /> }
 
-  let onSubmit = (formData: any) => {
-    props.setAuthData(formData.login, formData.password)}
-
   return (
     <div className={styles.formWrap}>
-    <h1 className={styles.title}>Авторизация</h1>
-      <LoginReduxForm onSubmit={onSubmit} />
+      <Title>Авторизация</Title>
+      <Form
+        form={form}
+        name='basic'
+        onFinish={onSubmit}>
+        <Form.Item
+          name='login'>
+          <Input placeholder='login' />
+        </Form.Item>
+        <Form.Item
+          name='password'>
+          <Input.Password placeholder='password' />
+        </Form.Item>
+        <Form.Item name="remember" valuePropName="checked">
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
+        <Form.Item >
+          <Button type="primary" htmlType="submit">
+            Submit
+        </Button>
+        </Form.Item>
+      </Form>
     </div>
   )
 }
