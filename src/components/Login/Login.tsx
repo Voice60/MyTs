@@ -1,21 +1,39 @@
 import { Button, Checkbox, Form, Input, Typography } from 'antd';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
-import styles from './Login.module.scss';
+import { stopSubmit } from 'redux-form';
 
+import { setAuth } from '../../redux/loginReducer';
+import { getIsAuth } from '../../redux/selectors/loginSelectors';
+import styles from './Login.module.scss';
 
 const { Title } = Typography;
 
-const Login = (props: any) => {
+const Login = () => {
+
+  const isAuth = useSelector(getIsAuth)
+
+  const dispatch = useDispatch()
+
+  const setAuthData = (login: string, password: string) => {
+    // fake auth
+    if (login !== 'admin' || password !== 'admin') {
+      dispatch(stopSubmit('login', { _error: 'Неверный логин или пароль' }))
+    } else {
+      dispatch(setAuth())
+    }
+  }
+
   const [form] = Form.useForm();
 
   let onSubmit = (formData: any) => {
-    props.setAuthData(formData.login, formData.password)
+    setAuthData(formData.login, formData.password)
     localStorage.setItem('rememberMe', formData.remember)
     localStorage.setItem('user', formData.remember ? formData.login : '')
   }
 
-  if (props.isAuth) { return <Redirect to={'/'} /> }
+  if (isAuth) { return <Redirect to={'/'} /> }
 
   return (
     <div className={styles.formWrap}>
